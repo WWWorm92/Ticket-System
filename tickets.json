@@ -1,9 +1,16 @@
 [
     {
-        "id": 1,
+        "id": "1",
         "user": "Dan",
         "issue": "1234567890poiuy\u0444\u044b\u0432\u0430\u043f",
         "status": "in_progress",
+        "comments": []
+    },
+    {
+        "id": "2",
+        "user": "admin",
+        "issue": "zcccc",
+        "status": "not_started",
         "comments": []
     }
 ]
