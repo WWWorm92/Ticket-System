@@ -1,48 +1,9 @@
 [
     {
-        "user": "ggg",
-        "issue": "fssf\r\n"
-    },
-    {
-        "user": "123",
-        "issue": "bhgjhbbhjh"
-    },
-    {
-        "user": "123",
-        "issue": "gkgkbbkk",
-        "status": "cannot_resolve"
-    },
-    {
+        "id": 1,
         "user": "Dan",
-        "issue": "123",
-        "status": "in_progress"
-    },
-    {
-        "user": "ggg",
-        "issue": "орнлр",
-        "status": "not_started"
-    },
-    {
-        "user": "бвтвдвпдвтпв",
-        "issue": "вплтдптпдптпдвалтпвтптвалюв",
-        "status": "closed"
-    },
-    {
-        "user": "hkhukhu",
-        "issue": "hlhlnln",
-        "status": "not_started",
-        "comments": []
-    },
-    {
-        "user": "болотол",
-        "issue": "ь",
-        "status": "not_started",
-        "comments": []
-    },
-    {
-        "user": "ыдаодаыо",
-        "issue": "1233й",
-        "status": "not_started",
+        "issue": "1234567890poiuy\u0444\u044b\u0432\u0430\u043f",
+        "status": "in_progress",
         "comments": []
     }
 ]
