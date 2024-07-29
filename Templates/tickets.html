@@ -6,47 +6,121 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Список тикетов</title>
     <style>
-        .status-not_started { background-color: #e0e0e0; } /* Серый */
-        .status-in_progress { background-color: #f0ad4e; } /* Желтый */
-        .status-closed { background-color: #5bde62; } /* Зеленый */
-        .status-cannot_resolve { background-color: #d9534f; } /* Красный */
+        .status-not_started {
+            background-color: #e0e0e0;
+        }
+
+        .status-in_progress {
+            background-color: #f0ad4e;
+        }
+
+        .status-closed {
+            background-color: #5bde62;
+        }
+
+        .status-cannot_resolve {
+            background-color: #d9534f;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Все тикеты</h1>
-        <table class="table table-bordered mt-4">
-            <thead>
-                <tr>
-                    <th scope="col">Номер тикета</th>
-                    <th scope="col">Пользователь</th>
-                    <th scope="col">Описание проблемы</th>
-                    <th scope="col">Статус</th>
-                    <th scope="col">Действия</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for ticket in tickets %}
-                    <tr class="status-{{ ticket.status }}">
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ ticket.user }}</td>
-                        <td>{{ ticket.issue }}</td>
-                        <td>
-                            {% if ticket.status == 'not_started' %}Не взят в работу
-                            {% elif ticket.status == 'in_progress' %}В работе
-                            {% elif ticket.status == 'closed' %}Закрыт
-                            {% elif ticket.status == 'cannot_resolve' %}Нерешаемая задача
-                            {% endif %}
-                        </td>
-                        <td><a href="{{ url_for('view_ticket', ticket_id=loop.index0) }}" class="btn btn-info">Просмотреть</a></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Назад</a>
+<div class="container">
+    <h1 class="mt-5">Все тикеты</h1>
+    <table class="table table-bordered mt-4">
+        <thead>
+        <tr>
+            <th scope="col">Номер тикета</th>
+            <th scope="col">Пользователь</th>
+            <th scope="col">Описание проблемы</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ticket in tickets %}
+        <tr class="status-{{ ticket.status }}">
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ ticket.user }}</td>
+            <td>{{ ticket.issue }}</td>
+            <td>
+                {% if ticket.status == 'not_started' %}Не взят в работу
+                {% elif ticket.status == 'in_progress' %}В работе
+                {% elif ticket.status == 'closed' %}Закрыт
+                {% elif ticket.status == 'cannot_resolve' %}Нерешаемая задача
+                {% endif %}
+            </td>
+            <td>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ticketModal"
+                        data-id="{{ loop.index0 }}">Просмотреть
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Назад</a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ticketModal" tabindex="-1" role="dialog" aria-labelledby="ticketModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ticketModalLabel">Детали тикета</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Загрузка...
+            </div>
+            <div class="modal-footer">
+                <form id="commentForm" method="post" action="">
+                    <div class="form-group">
+                        <label for="comment">Добавить комментарий:</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+                </form>
+<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>-->
+            </div>
+        </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $('#ticketModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Кнопка, которая вызвала модальное окно
+        var ticketId = button.data('id'); // Извлекаем ID тикета из data-* атрибутов
+        var modal = $(this);
+        var modalBody = modal.find('.modal-body');
+
+        // Очистка содержимого модального окна перед загрузкой нового контента
+        modalBody.html('Загрузка...');
+
+        // Загружаем содержимое тикета в модальное окно
+        $.ajax({
+            url: '/tickets/' + ticketId,
+            method: 'GET',
+            success: function (data) {
+                modalBody.html(data);
+            },
+            error: function () {
+                modalBody.html('Ошибка загрузки данных');
+            }
+        });
+
+        // Устанавливаем URL для формы комментариев
+        modal.find('#commentForm').attr('action', '/tickets/' + ticketId + '/comment');
+    });
+</script>
 </body>
 </html>

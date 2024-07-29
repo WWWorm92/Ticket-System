@@ -1,0 +1,19 @@
+<div class="modal-body">
+    <h5 class="modal-title">Тикет #{{ ticket_id + 1 }}</h5>
+    <p><strong>Пользователь:</strong> {{ ticket.user }}</p>
+    <p><strong>Описание проблемы:</strong> {{ ticket.issue }}</p>
+    <p><strong>Статус:</strong>
+        {% if ticket.status == 'not_started' %}Не взят в работу
+        {% elif ticket.status == 'in_progress' %}В работе
+        {% elif ticket.status == 'closed' %}Закрыт
+        {% elif ticket.status == 'cannot_resolve' %}Нерешаемая задача
+        {% endif %}
+    </p>
+    <hr>
+    <h6>Комментарии:</h6>
+    <ul>
+        {% for comment in ticket.comments %}
+            <li>{{ comment }}</li>
+        {% endfor %}
+    </ul>
+</div>
