@@ -37,7 +37,7 @@ def ticket_detail(ticket_id):
     tickets = load_tickets()
     if 0 <= ticket_id < len(tickets):
         ticket = tickets[ticket_id]
-        return render_template('ticket_modal_content.html', ticket=ticket)
+        return render_template('ticket_modal_content.html', ticket=ticket, ticket_id=ticket_id)
     return 'Ticket not found', 404
 
 @app.route('/tickets/<int:ticket_id>/comment', methods=['POST'])
